@@ -1,0 +1,27 @@
+{
+  "name": "graphql-prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src\\index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/schema": "^8.3.1",
+    "@types/express": "^4.17.13",
+    "apollo-server-express": "^3.6.3",
+    "express": "^4.17.2",
+    "graphql": "^16.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.16",
+    "dotenv": "^16.0.0",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
+  }
+}
