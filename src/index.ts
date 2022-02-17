@@ -5,7 +5,6 @@ import { ApolloServer } from 'apollo-server-express';
 
 async function startApolloServer() {
   const app = express();
-  const PORT = process.env.port || 5000;
 
   const server = new ApolloServer({ schema });
 
@@ -14,7 +13,7 @@ async function startApolloServer() {
   app.get('/', (req, res) => res.send({ Meow: 'Meow' }));
 
   server.applyMiddleware({ app, path: '/graphiql' });
-  app.listen(PORT, () => {
+  app.listen(process.env.port || 5000, () => {
     console.log(
       `\n🚀      GraphQL is now running on http://localhost:${PORT}/graphiql`,
     );
