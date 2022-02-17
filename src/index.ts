@@ -5,7 +5,7 @@ import { ApolloServer } from 'apollo-server-express';
 
 async function startApolloServer() {
   const app = express();
-  const PORT = process.env.port;
+  const PORT = process.env.port || 5000;
 
   const server = new ApolloServer({ schema });
 
