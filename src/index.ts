@@ -14,7 +14,7 @@ async function startApolloServer() {
   });
 
   await server.start();
-  server.applyMiddleware({ app, path: '/graphql' });
+  server.applyMiddleware({ app, path: '/' });
   const PORT = process.env.PORT || 5000;
   const env = process.env.NODE_ENV;
   app.listen(PORT, () => {
