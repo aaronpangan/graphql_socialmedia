@@ -6,7 +6,10 @@ import { ApolloServer } from 'apollo-server-express';
 async function startApolloServer() {
   const app = express();
 
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({
+    schema,
+    introspection: true,
+  });
 
   await server.start();
 
