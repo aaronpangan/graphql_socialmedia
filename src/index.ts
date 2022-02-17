@@ -11,6 +11,8 @@ async function startApolloServer() {
 
   await server.start();
 
+  app.get('/', (req, res) => res.send({ Meow: 'Meow' }));
+
   server.applyMiddleware({ app, path: '/graphiql' });
   app.listen(PORT, () => {
     console.log(

@@ -1,3 +1,11 @@
 type Query {
   hello: String
 }
+
+type Mutation {
+  sample(id: ID!): String
+}
+
+type Xa {
+  prod: String
+}
