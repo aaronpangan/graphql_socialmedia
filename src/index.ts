@@ -13,7 +13,7 @@ async function startApolloServer() {
   app.get('/', (req, res) => res.send({ Meow: 'Meow' }));
 
   server.applyMiddleware({ app, path: '/graphiql' });
-  const PORT = process.env.port || 5000;
+  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(
       `\n🚀      GraphQL is now running on http://localhost:${PORT}/graphiql`,
