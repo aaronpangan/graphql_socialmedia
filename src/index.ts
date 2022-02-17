@@ -15,7 +15,9 @@ async function startApolloServer() {
     console.log(
       `\n🚀      GraphQL is now running on http://localhost:${PORT}/`,
     );
+    console.log(process.env.sss)
   });
+  
 }
 
 startApolloServer();
