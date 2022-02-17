@@ -11,13 +11,17 @@ async function startApolloServer() {
   });
 
   const PORT = process.env.PORT || 5000;
+  const env = process.env.NODE_ENV;
   server.listen(PORT, () => {
-    console.log(
-      `\n🚀      GraphQL is now running on http://localhost:${PORT}/`,
-    );
-    console.log(process.env.sss)
+    if (env === 'development')
+      console.log(
+        `\n🚀      GraphQL is now running on http://localhost:${PORT}/`,
+      );
+    else if (env === 'production')
+      console.log(
+        `\n🚀      GraphQL is now running on https://graphql-socialmedia-prisma.herokuapp.com/`,
+      );
   });
-  
 }
 
 startApolloServer();
