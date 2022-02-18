@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-const { sample } = new PrismaClient();
+const { user } = new PrismaClient();
 
 module.exports = {
   Query: {
@@ -11,15 +11,14 @@ module.exports = {
 
   Mutation: {
     sample: async (_, args) => {
-     let newSample = await sample.create({
+      let newSample = await user.create({
         data: {
-          name: args.id,
+          email: 'Sample@email.com',
+          password: args.id,
         },
       });
-
-      console.log(newSample)
+      console.log(newSample);
       return args.id;
-      
     },
   },
 
