@@ -1,0 +1,26 @@
+type Query {
+  user: User
+  profile: Profile
+}
+
+type User {
+  id: ID!
+  email: String!
+  password: String
+  profile: Profile
+}
+
+type Profile {
+  id: ID!
+  first_name: String!
+  last_name: String!
+  bio: String
+  profile_pic: String
+  address: String
+  birthdate: String
+  user: User!
+  createdAt: String
+  updatedAt: String
+  comment: [Comment]
+  post: [Post]
+}

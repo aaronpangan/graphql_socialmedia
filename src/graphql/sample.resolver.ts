@@ -10,14 +10,14 @@ module.exports = {
   },
 
   Mutation: {
-    sample: async (_, args) => {
-      let newSample = await user.create({
-        data: {
-          email: 'Sample@email.com',
-          password: args.id,
-        },
-      });
-      console.log(newSample);
+    sample: async (_, args, { req, res }) => {
+      // let newSample = await user.create({
+      //   data: {
+      //     email: 'Sample@email.com',
+      //     password: args.id,
+      //   },
+      // });
+      // console.log(newSample);
       return args.id;
     },
   },
