@@ -4,19 +4,21 @@ import middleware from './middleware/authMiddleware';
 import { schema } from './graphql/registerSchema';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { PrismaClient } from '@prisma/client';
 
 async function startServer() {
+  const prisma = new PrismaClient();
+  const app = express();
+  middleware(app);
   const server = new ApolloServer({
     schema,
     introspection: true,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({ req, res, prisma }),
   });
 
   await server.start();
-  const app = express();
 
-  middleware(app);
   server.applyMiddleware({ app, path: '/' });
   const PORT = process.env.PORT || 5000;
   const env = process.env.NODE_ENV;
