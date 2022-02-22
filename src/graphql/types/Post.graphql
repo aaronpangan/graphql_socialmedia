@@ -1,5 +1,5 @@
 type Query {
-  post: Post
+  post(id: Int): Post
 }
 
 type Mutation {
