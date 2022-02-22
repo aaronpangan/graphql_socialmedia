@@ -53,4 +53,16 @@ module.exports = {
       return post;
     },
   },
+
+  Post: {
+    user: async (parent, args, { prisma }: ParamContext) => {
+      const user = await prisma.profile.findFirst({
+        where: {
+          userId: parent.profileId,
+        },
+      });
+
+      return user;
+    },
+  },
 };

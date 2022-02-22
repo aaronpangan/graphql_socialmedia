@@ -1,5 +1,7 @@
 type Query {
-  post(id: Int): Post
+  getAllPost: [Post]!
+  getOnePost(postId: Int): Post!
+  getUserPost(userId: Int): [Post]!
 }
 
 type Mutation {
