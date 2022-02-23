@@ -22,7 +22,7 @@ module.exports = {
           title,
           content,
           isPublic,
-          profileId: 5,
+          profileId: 1,
         },
       });
 

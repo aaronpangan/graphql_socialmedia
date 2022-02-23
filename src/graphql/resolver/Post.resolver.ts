@@ -55,7 +55,7 @@ module.exports = {
   },
 
   Post: {
-    user: async (parent, args, { prisma }: ParamContext) => {
+    profile: async (parent, args, { prisma }: ParamContext) => {
       const user = await prisma.profile.findFirst({
         where: {
           userId: parent.profileId,
@@ -63,6 +63,15 @@ module.exports = {
       });
 
       return user;
+    },
+
+    images: async (parent: Post, __, { prisma }: ParamContext) => {
+      const postPicture = await prisma.postImage.findMany({
+        where: {
+          postId: parent.id,
+        },
+      });
+      return postPicture;
     },
   },
 };

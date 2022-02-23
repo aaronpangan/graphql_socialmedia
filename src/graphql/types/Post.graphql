@@ -30,7 +30,7 @@ type Post {
   updatedAt: String
   isPublic: Boolean!
   images: [PostImage]
-  user: Profile!
+  profile: Profile!
   comments: [Comment]
 }
 
