@@ -11,6 +11,7 @@ type Mutation {
     isPublic: Boolean!
     PostImage: [String]
   ): PostPayload!
+  commentCreate(userId: ID!, postId: ID!, comment: String!): Comment!
 }
 
 type PostPayload {
@@ -36,11 +37,11 @@ type Post {
 
 type Comment {
   id: ID!
-  content: String!
+  comment: String!
   createdAt: String
   updatedAt: String
   user: Profile
-  post: Post!
+  post: Post
 }
 
 type PostImage {

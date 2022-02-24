@@ -1,11 +1,16 @@
 import { ParamContext } from './../../interface/parameter.interface';
-import { createPost, PostPayload } from './../../interface/post.interface';
+import {
+  CreatePost,
+  PostPayload,
+  CreateComment,
+  CommentPayload,
+} from './../../interface/post.interface';
 
 module.exports = {
   Mutation: {
     postCreate: async (
       _,
-      { title, content, isPublic }: createPost,
+      { title, content, isPublic }: CreatePost,
       { req, prisma }: ParamContext,
     ): Promise<PostPayload> => {
       console.log(title);
@@ -27,6 +32,24 @@ module.exports = {
       });
 
       return { error: [], post };
+    },
+
+    commentCreate: async (
+      _,
+      { userId, postId, comment }: CreateComment,
+      { prisma }: ParamContext,
+    ): Promise<CommentPayload> => {
+      const newComment = await prisma.comment.create({
+        data: {
+          postId,
+          userId,
+          content: comment,
+        },
+      });
+
+      return {
+        comment: newComment
+      };
     },
   },
 };
