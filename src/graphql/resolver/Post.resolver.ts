@@ -97,4 +97,20 @@ module.exports = {
       return comments;
     },
   },
+
+  Comment: {
+    user: async (
+      parent: Comment,
+      __,
+      { prisma }: ParamContext,
+    ): Promise<Profile | null> => {
+      const user = await prisma.profile.findFirst({
+        where: {
+          userId: parent.userId,
+        },
+      });
+
+      return user;
+    },
+  },
 };
