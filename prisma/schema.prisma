@@ -82,7 +82,7 @@ model Comment {
 
 
   // Many to One to Post
-  postId Int     @unique
+  postId Int
   post   Post    @relation(fields: [postId], references: [id])
   // Many to One to User (Commenter)
   userId Int

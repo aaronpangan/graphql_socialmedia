@@ -1,5 +1,4 @@
-import { Post, PostImage, Profile } from '@prisma/client';
-import { throwHttpGraphQLError } from 'apollo-server-core/dist/runHttpQuery';
+import { Comment, Post, PostImage, Profile } from '@prisma/client';
 import { UserInputError } from 'apollo-server-express';
 import { ParamContext } from '../../interface/parameter.interface';
 
@@ -55,7 +54,11 @@ module.exports = {
   },
 
   Post: {
-    profile: async (parent, args, { prisma }: ParamContext): Promise<Profile | null> => {
+    profile: async (
+      parent,
+      args,
+      { prisma }: ParamContext,
+    ): Promise<Profile | null> => {
       const user = await prisma.profile.findFirst({
         where: {
           userId: parent.profileId,
@@ -65,13 +68,49 @@ module.exports = {
       return user;
     },
 
-    images: async (parent: Post, __, { prisma }: ParamContext): Promise<PostImage[]> => {
+    images: async (
+      parent: Post,
+      __,
+      { prisma }: ParamContext,
+    ): Promise<PostImage[]> => {
       const postPicture = await prisma.postImage.findMany({
         where: {
           postId: parent.id,
         },
       });
       return postPicture;
+    },
+
+    comments: async (
+      parent: Post,
+      __,
+      { prisma }: ParamContext,
+    ): Promise<Comment[] | null> => {
+      const comments = await prisma.comment.findMany({
+        where: {
+          postId: parent.id,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+      return comments;
+    },
+  },
+
+  Comment: {
+    user: async (
+      parent: Comment,
+      __,
+      { prisma }: ParamContext,
+    ): Promise<Profile | null> => {
+      const user = await prisma.profile.findFirst({
+        where: {
+          userId: parent.userId,
+        },
+      });
+
+      return user;
     },
   },
 };
