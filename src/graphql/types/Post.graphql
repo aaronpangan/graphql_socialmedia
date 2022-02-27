@@ -5,13 +5,15 @@ type Query {
 }
 
 type Mutation {
-  postCreate(
-    title: String!
-    content: String!
-    isPublic: Boolean!
-    PostImage: [String]
-  ): PostPayload!
+  postCreate(postId: ID!, post: PostInput!): PostPayload!
   commentCreate(userId: ID!, postId: ID!, comment: String!): Comment!
+}
+
+type PostInput {
+  title: String!
+  content: String!
+  isPublic: Boolean!
+  PostImage: [String]
 }
 
 type PostPayload {
