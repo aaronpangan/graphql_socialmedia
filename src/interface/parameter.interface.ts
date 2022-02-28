@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
-export interface ParamContext {
+export interface IParamContext {
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,

@@ -1,28 +1,27 @@
-import { ParamContext } from './../../interface/parameter.interface';
+import { IParamContext } from './../../interface/parameter.interface';
+import { UserInputError } from 'apollo-server-express';
 import {
-  CreatePost,
-  PostPayload,
-  CreateComment,
-  CommentPayload,
+  ICreatePost,
+  IPostPayload,
+  ICreateComment,
+  ICommentPayload,
+  IUpdatePost,
+  IAddPostImage,
 } from './../../interface/post.interface';
+import { PostImage } from '@prisma/client';
 
 module.exports = {
   Mutation: {
     postCreate: async (
       _,
-      { title, content, isPublic }: CreatePost,
-      { req, prisma }: ParamContext,
-    ): Promise<PostPayload> => {
+      { post: { title, content, isPublic } }: ICreatePost,
+      { req, prisma }: IParamContext,
+    ): Promise<IPostPayload> => {
       console.log(title);
       if (!title || !content || !isPublic)
-        return {
-          error: [
-            { message: 'You must provide a title, content and isPublic' },
-          ],
-          post: null,
-        };
+        throw new UserInputError('Must include title, content and isPublic');
 
-      const post = await prisma.post.create({
+      const newPost = await prisma.post.create({
         data: {
           title,
           content,
@@ -31,14 +30,64 @@ module.exports = {
         },
       });
 
-      return { error: [], post };
+      return { newPost };
     },
 
+    postUpdate: async (
+      _,
+      { post: { title, content, isPublic }, postId }: IUpdatePost,
+      { prisma }: IParamContext,
+    ) => {
+      const findPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+      if (!findPost) throw new UserInputError('Post Not Found');
+
+      const updatePost = await prisma.post.update({
+        data: {
+          title: !title ? findPost.title : title,
+          content: !content ? findPost.content : content,
+          isPublic: !isPublic ? findPost.isPublic : isPublic,
+        },
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      return updatePost;
+    },
+    addImage: async (
+      _,
+      { postId, url }: IAddPostImage,
+      { prisma }: IParamContext,
+    ): Promise<PostImage[]> => {
+      const findPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+      if (!findPost) throw new UserInputError('Post Not Found');
+
+url.forEach(async item => {
+
+await prisma.postImage.createMany({data: {
+
+  [item, postId]
+  
+}})
+
+
+})
+
+
+    },
     commentCreate: async (
       _,
-      { userId, postId, comment }: CreateComment,
-      { prisma }: ParamContext,
-    ): Promise<CommentPayload> => {
+      { userId, postId, comment }: ICreateComment,
+      { prisma }: IParamContext,
+    ): Promise<ICommentPayload> => {
       const newComment = await prisma.comment.create({
         data: {
           postId,
@@ -48,7 +97,7 @@ module.exports = {
       });
 
       return {
-        comment: newComment
+        comment: newComment,
       };
     },
   },

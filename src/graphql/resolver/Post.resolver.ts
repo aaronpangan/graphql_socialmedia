@@ -1,10 +1,10 @@
 import { Comment, Post, PostImage, Profile } from '@prisma/client';
 import { UserInputError } from 'apollo-server-express';
-import { ParamContext } from '../../interface/parameter.interface';
+import { IParamContext } from '../../interface/parameter.interface';
 
 module.exports = {
   Query: {
-    getAllPost: async (_, __, { prisma }: ParamContext): Promise<Post[]> => {
+    getAllPost: async (_, __, { prisma }: IParamContext): Promise<Post[]> => {
       const post = await prisma.post.findMany({
         where: {
           isPublic: true,
@@ -15,7 +15,7 @@ module.exports = {
       });
       return post;
     },
-    getOnePost: async (_, { id }, { prisma }: ParamContext): Promise<Post> => {
+    getOnePost: async (_, { id }, { prisma }: IParamContext): Promise<Post> => {
       const post = await prisma.post.findFirst({
         where: {
           id,
@@ -29,7 +29,7 @@ module.exports = {
     getUserPost: async (
       _,
       { userId },
-      { prisma }: ParamContext,
+      { prisma }: IParamContext,
     ): Promise<Post[]> => {
       const user = await prisma.profile.findFirst({
         where: {
@@ -57,7 +57,7 @@ module.exports = {
     profile: async (
       parent,
       args,
-      { prisma }: ParamContext,
+      { prisma }: IParamContext,
     ): Promise<Profile | null> => {
       const user = await prisma.profile.findFirst({
         where: {
@@ -71,7 +71,7 @@ module.exports = {
     images: async (
       parent: Post,
       __,
-      { prisma }: ParamContext,
+      { prisma }: IParamContext,
     ): Promise<PostImage[]> => {
       const postPicture = await prisma.postImage.findMany({
         where: {
@@ -84,7 +84,7 @@ module.exports = {
     comments: async (
       parent: Post,
       __,
-      { prisma }: ParamContext,
+      { prisma }: IParamContext,
     ): Promise<Comment[] | null> => {
       const comments = await prisma.comment.findMany({
         where: {
@@ -102,7 +102,7 @@ module.exports = {
     user: async (
       parent: Comment,
       __,
-      { prisma }: ParamContext,
+      { prisma }: IParamContext,
     ): Promise<Profile | null> => {
       const user = await prisma.profile.findFirst({
         where: {

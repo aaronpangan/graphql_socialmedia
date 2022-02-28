@@ -1,6 +1,5 @@
 import { Profile, User } from '@prisma/client';
-import { GraphQLError } from 'graphql';
-import { ParamContext } from './../../interface/parameter.interface';
+import { IParamContext } from './../../interface/parameter.interface';
 import { UserInputError } from 'apollo-server-express';
 module.exports = {
   Query: {},
@@ -9,7 +8,7 @@ module.exports = {
     user: async (
       parent: Profile,
       _,
-      { prisma }: ParamContext,
+      { prisma }: IParamContext,
     ): Promise<User> => {
       const user = await prisma.user.findFirst({
         where: {
