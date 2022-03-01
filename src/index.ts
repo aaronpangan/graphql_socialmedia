@@ -9,7 +9,7 @@ import { PrismaClient } from '@prisma/client';
 async function startServer() {
   const prisma = new PrismaClient();
   const app = express();
-  middleware(app);
+  app.use(express.urlencoded({ extended: true }));
   const server = new ApolloServer({
     schema,
     introspection: true,

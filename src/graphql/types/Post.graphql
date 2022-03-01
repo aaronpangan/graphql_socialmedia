@@ -7,7 +7,7 @@ type Query {
 type Mutation {
   postCreate(post: PostInput!): Post!
   postUpdate(postId: ID!, post: PostUpdateInput!): Post!
-  postAddImage(postId: ID!, url: [String]!): [String!]
+  postAddImage(postId: ID!, url: [AddImage]!): [PostImage!]
   commentCreate(userId: ID!, postId: ID!, comment: String!): Comment!
 }
 
@@ -15,6 +15,10 @@ type Mutation {
 # Delete COmment
 # Add Picture to a Post
 # Delete Picture to a Post
+
+input AddImage {
+  url: String!
+}
 
 input PostInput {
   title: String!
@@ -57,4 +61,5 @@ type Comment {
 type PostImage {
   id: ID
   url: String!
+  postId: ID
 }

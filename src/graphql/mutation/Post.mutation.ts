@@ -58,7 +58,7 @@ module.exports = {
 
       return updatePost;
     },
-    addImage: async (
+    postAddImage: async (
       _,
       { postId, url }: IAddPostImage,
       { prisma }: IParamContext,
@@ -70,18 +70,22 @@ module.exports = {
       });
       if (!findPost) throw new UserInputError('Post Not Found');
 
-url.forEach(async item => {
+      const parseUrlObject = JSON.parse(JSON.stringify(url));
+      parseUrlObject.forEach((object) => {
+        object.postId = Number(postId);
+      });
 
-await prisma.postImage.createMany({data: {
+      await prisma.postImage.createMany({
+        data: parseUrlObject,
+      });
 
-  [item, postId]
-  
-}})
+      const images = await prisma.postImage.findMany({
+        where: { postId: Number(postId) },
+      });
 
+      console.log(images);
 
-})
-
-
+      return images;
     },
     commentCreate: async (
       _,
