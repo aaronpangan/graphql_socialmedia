@@ -18,16 +18,20 @@ export interface IPostPayload {
   newPost: Post;
 }
 
-export interface IAddPostImage {
+export interface IPostImage {
   postId: number;
   url: [string];
+  imageId: number;
 }
 
-export interface ICreateComment {
+export interface IComment {
   userId: number;
   postId: number;
   comment: string;
+  commentId: number;
 }
 export interface ICommentPayload {
-  comment: Comment;
+  content: String;
+  id: number;
+  userId: number;
 }

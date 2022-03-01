@@ -3,12 +3,14 @@ import { UserInputError } from 'apollo-server-express';
 import {
   ICreatePost,
   IPostPayload,
-  ICreateComment,
+  IComment,
   ICommentPayload,
   IUpdatePost,
-  IAddPostImage,
+  IPostImage,
 } from './../../interface/post.interface';
 import { PostImage } from '@prisma/client';
+import { parseArrObj } from '../../helper/helper';
+import { printSchema } from 'graphql';
 
 module.exports = {
   Mutation: {
@@ -60,7 +62,7 @@ module.exports = {
     },
     postAddImage: async (
       _,
-      { postId, url }: IAddPostImage,
+      { postId, url }: IPostImage,
       { prisma }: IParamContext,
     ): Promise<PostImage[]> => {
       const findPost = await prisma.post.findUnique({
@@ -70,10 +72,7 @@ module.exports = {
       });
       if (!findPost) throw new UserInputError('Post Not Found');
 
-      const parseUrlObject = JSON.parse(JSON.stringify(url));
-      parseUrlObject.forEach((object) => {
-        object.postId = Number(postId);
-      });
+      const parseUrlObject = parseArrObj(url, postId);
 
       await prisma.postImage.createMany({
         data: parseUrlObject,
@@ -83,26 +82,62 @@ module.exports = {
         where: { postId: Number(postId) },
       });
 
-      console.log(images);
-
       return images;
+    },
+    postDeleteImage: async (
+      _,
+      { postId, imageId }: IPostImage,
+      { prisma }: IParamContext,
+    ): Promise<string> => {
+      const findPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+      if (!findPost) throw new UserInputError('Post Not Found');
+
+      const deleteImage = await prisma.postImage.deleteMany({
+        where: {
+          id: { in: imageId },
+          postId: Number(postId),
+        },
+      });
+
+      return `Successfully deleted images`;
     },
     commentCreate: async (
       _,
-      { userId, postId, comment }: ICreateComment,
+      { userId, postId, comment }: IComment,
       { prisma }: IParamContext,
     ): Promise<ICommentPayload> => {
       const newComment = await prisma.comment.create({
         data: {
-          postId,
-          userId,
+          postId: Number(postId),
+          userId: Number(userId),
           content: comment,
         },
       });
+      return newComment;
+    },
+    commentDelete: async (
+      _,
+      { postId, commentId }: IComment,
+      { prisma }: IParamContext,
+    ): Promise<string> => {
+      const findPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+      if (!findPost) throw new UserInputError('Post Not Found');
 
-      return {
-        comment: newComment,
-      };
+      const deletePost = await prisma.comment.delete({
+        where: {
+          id: Number(commentId),
+        },
+      });
+
+      return 'Deleted Successfully';
     },
   },
 };

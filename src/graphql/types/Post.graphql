@@ -8,13 +8,15 @@ type Mutation {
   postCreate(post: PostInput!): Post!
   postUpdate(postId: ID!, post: PostUpdateInput!): Post!
   postAddImage(postId: ID!, url: [AddImage]!): [PostImage!]
+  postDeleteImage(postId: ID!, imageId: [Int]!): String!
+  postDelete(postId: ID!): String!
+  commentDelete(postId: ID!, commentId: ID!): String!
   commentCreate(userId: ID!, postId: ID!, comment: String!): Comment!
 }
 
+#Comment Update
 # Delete Post
 # Delete COmment
-# Add Picture to a Post
-# Delete Picture to a Post
 
 input AddImage {
   url: String!
@@ -56,6 +58,7 @@ type Comment {
   updatedAt: String
   user: Profile
   post: Post
+  userId: Int
 }
 
 type PostImage {
