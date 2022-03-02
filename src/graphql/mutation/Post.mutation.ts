@@ -8,7 +8,7 @@ import {
   IUpdatePost,
   IPostImage,
 } from './../../interface/post.interface';
-import { PostImage } from '@prisma/client';
+import { Comment, PostImage } from '@prisma/client';
 import { parseArrObj } from '../../helper/helper';
 import { printSchema } from 'graphql';
 
@@ -119,6 +119,37 @@ module.exports = {
       });
       return newComment;
     },
+
+    commentUpdate: async (
+      _,
+      { postId, commentId, comment }: IComment,
+      { prisma }: IParamContext,
+    ): Promise<Comment> => {
+      const findPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+      if (!findPost) throw new UserInputError('Post Not Found');
+
+      const findComment = await prisma.comment.findUnique({
+        where: {
+          id: Number(commentId),
+        },
+      });
+
+      if (!findComment) throw new UserInputError('Comment Not Found');
+
+      const updateComment = await prisma.comment.update({
+        data: { content: comment },
+        where: {
+          id: Number(commentId),
+        },
+      });
+
+      return updateComment;
+    },
+
     commentDelete: async (
       _,
       { postId, commentId }: IComment,
@@ -130,6 +161,14 @@ module.exports = {
         },
       });
       if (!findPost) throw new UserInputError('Post Not Found');
+
+      const findComment = await prisma.comment.findUnique({
+        where: {
+          id: Number(commentId),
+        },
+      });
+
+      if (!findComment) throw new UserInputError('Comment Not Found');
 
       const deletePost = await prisma.comment.delete({
         where: {

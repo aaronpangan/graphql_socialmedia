@@ -12,11 +12,11 @@ type Mutation {
   postDelete(postId: ID!): String!
   commentDelete(postId: ID!, commentId: ID!): String!
   commentCreate(userId: ID!, postId: ID!, comment: String!): Comment!
+  commentUpdate(commentId: ID!, comment: String!, postId: ID!): Comment!
 }
 
 #Comment Update
 # Delete Post
-# Delete COmment
 
 input AddImage {
   url: String!
