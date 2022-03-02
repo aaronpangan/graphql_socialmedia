@@ -57,7 +57,7 @@ model Post {
 
   // Relation with User
   profileId Int
-  Profile   Profile @relation(fields: [profileId], references: [userId])
+  Profile   Profile @relation(fields: [profileId], references: [userId], onDelete: SetNull)
 
 
   PostImage PostImage[]
@@ -71,7 +71,7 @@ model PostImage {
 
   // Many to One to Post
   postId Int
-  post   Post @relation(fields: [postId], references: [id])
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -83,7 +83,7 @@ model Comment {
 
   // Many to One to Post
   postId Int
-  post   Post    @relation(fields: [postId], references: [id])
+  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   // Many to One to User (Commenter)
   userId Int
   user   Profile @relation(fields: [userId], references: [userId])

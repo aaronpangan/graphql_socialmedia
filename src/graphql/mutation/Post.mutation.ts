@@ -7,6 +7,7 @@ import {
   ICommentPayload,
   IUpdatePost,
   IPostImage,
+  IDeletePost,
 } from './../../interface/post.interface';
 import { Comment, PostImage } from '@prisma/client';
 import { parseArrObj } from '../../helper/helper';
@@ -60,11 +61,11 @@ module.exports = {
 
       return updatePost;
     },
-    postAddImage: async (
+    postDelete: async (
       _,
-      { postId, url }: IPostImage,
+      { postId }: IDeletePost,
       { prisma }: IParamContext,
-    ): Promise<PostImage[]> => {
+    ) => {
       const findPost = await prisma.post.findUnique({
         where: {
           id: Number(postId),
@@ -72,6 +73,19 @@ module.exports = {
       });
       if (!findPost) throw new UserInputError('Post Not Found');
 
+      const deletePost = await prisma.post.delete({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      return 'Post Deleted Successfully';
+    },
+    postAddImage: async (
+      _,
+      { postId, url }: IPostImage,
+      { prisma }: IParamContext,
+    ): Promise<PostImage[]> => {
       const parseUrlObject = parseArrObj(url, postId);
 
       await prisma.postImage.createMany({

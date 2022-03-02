@@ -9,6 +9,10 @@ export interface ICreatePost {
   };
 }
 
+export interface IDeletePost {
+  postId: number;
+}
+
 export interface IUpdatePost {
   post: { title: string; content: string; isPublic: boolean };
 
